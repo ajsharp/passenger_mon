@@ -20,6 +20,10 @@ op = OptionParser.new do |opts|
     options[:log] = log
   end
 
+  opts.on("-p=PIDFILE", "--pid=PID_FILE", "Pidfile to write") do |pidfile|
+    options[:pidfile] = pidfile
+  end
+
   opts.on_tail("-h", "--help", "show this message") do
     abort(opts.to_s)
   end
@@ -29,27 +33,26 @@ end.parse!
 options[:interval]  ||= 30
 options[:threshold] ||= 400
 options[:log]       ||= "/var/log/passenger_mong.log"
+options[:pidfile]   ||= "/tmp/passenger_mon.pid"
 options[:threshold] = options[:threshold].to_i
 
-process_name = 'passenger_mon'
-pidfile = "/tmp/#{process_name}.pid"
 
 # If a pidfile exists when we start up, we need to remove it.
 # This probably means a non-clean shutdown the last time
 # the program was shutdown.
-if File.exist?(pidfile)
+if File.exist?(options[:pidfile])
   $stdout.puts "Existing pidfile found. Removing..."
-  FileUtils.rm(pidfile)
+  FileUtils.rm(options[:pidfile])
 end
 
 # remove the pidfile on shutdown
 at_exit do
   $stdout.puts "Removing pidfile."
-  FileUtils.rm(pidfile)
+  FileUtils.rm(options[:pidfile])
 end
 
 # write out the pidfile
-File.open(pidfile, 'w') { |f| f.puts($$) }
+File.open(options[:pidfile], 'w') { |f| f.puts($$) }
 
 require 'logger'
 logger = Logger.new(options[:log])
