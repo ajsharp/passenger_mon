@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version     = '>= 1.8.7'
   s.required_rubygems_version = '>= 1.3.6'
 
-  s.extra_rdoc_files = ["README"]
+  s.extra_rdoc_files = ["README.md", "MIT-LICENSE"]
   s.bindir           = 'bin'
   s.executables      = ['passenger_mon']
 end
