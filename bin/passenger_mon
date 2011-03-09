@@ -8,7 +8,7 @@ options = {}
 op = OptionParser.new do |opts|
   opts.banner = 'Usage: passenger_mon [options]'
 
-  opts.on("-i=SECONDS", "--interval=SECONDS", "Poll interval in seconds (default: 10)") do |interval|
+  opts.on("-i=SECONDS", "--interval=SECONDS", "Poll interval in seconds (default: 30)") do |interval|
     options[:interval] = interval
   end
 
@@ -22,7 +22,7 @@ op = OptionParser.new do |opts|
 end.parse!
 
 # set option defaults
-options[:interval]  ||= 10
+options[:interval]  ||= 30
 options[:threshold] ||= 800
 options[:threshold] = options[:threshold].to_i
 
