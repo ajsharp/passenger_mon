@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
+require 'fileutils'
+
 options = {}
 
 op = OptionParser.new do |opts|
@@ -23,6 +25,18 @@ end.parse!
 options[:interval]  ||= 10
 options[:threshold] ||= 800
 options[:threshold] = options[:threshold].to_i
+
+process_name = 'passenger_mon'
+pidfile = "/tmp/#{process_name}.pid"
+
+# remove the pidfile on shutdown
+at_exit do
+  $stdout.puts "Removing pidfile."
+  FileUtils.rm(pidfile)
+end
+
+# write out the pidfile
+File.open(pidfile, 'w') { |f| f.puts($$) }
 
 require 'logger'
 logger = Logger.new("/var/log/passenger_mon.log")
