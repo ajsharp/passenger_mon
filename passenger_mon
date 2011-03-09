@@ -64,6 +64,9 @@ loop do
     pid, vm_size, vm_size_label, mem_res, *bullshit = res.strip.split(/\s+/)
     if mem_res.to_i >= options[:threshold]
       logger.info "Killing process #{pid} using #{mem_res.to_i}mb of ram (Threshold=#{options[:threshold]}mb)"
+
+      # passenger treats the USR1 signal as a graceful shutdown.
+      Process.kill("USR1", pid.to_i)
     end
   end
   
