@@ -16,6 +16,10 @@ op = OptionParser.new do |opts|
     options[:threshold] = mb
   end
 
+  opts.on("-l=LOG_FILE", "--log=LOG_FILE", "Log file location (default: /var/log/passenger_mon.log)") do |log|
+    options[:log] = log
+  end
+
   opts.on_tail("-h", "--help", "show this message") do
     abort(opts.to_s)
   end
@@ -24,6 +28,7 @@ end.parse!
 # set option defaults
 options[:interval]  ||= 30
 options[:threshold] ||= 400
+options[:log]       ||= "/var/log/passenger_mong.log"
 options[:threshold] = options[:threshold].to_i
 
 process_name = 'passenger_mon'
@@ -47,7 +52,7 @@ end
 File.open(pidfile, 'w') { |f| f.puts($$) }
 
 require 'logger'
-logger = Logger.new("/var/log/passenger_mon.log")
+logger = Logger.new(options[:log])
 
 Signal.trap('INT') do
   logger.info "Shutting down now..."
