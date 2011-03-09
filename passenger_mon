@@ -29,6 +29,14 @@ options[:threshold] = options[:threshold].to_i
 process_name = 'passenger_mon'
 pidfile = "/tmp/#{process_name}.pid"
 
+# If a pidfile exists when we start up, we need to remove it.
+# This probably means a non-clean shutdown the last time
+# the program was shutdown.
+if File.exist?(pidfile)
+  $stdout.puts "Existing pidfile found. Removing..."
+  FileUtils.rm(pidfile)
+end
+
 # remove the pidfile on shutdown
 at_exit do
   $stdout.puts "Removing pidfile."
