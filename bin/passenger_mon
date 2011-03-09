@@ -12,7 +12,7 @@ op = OptionParser.new do |opts|
     options[:interval] = interval
   end
 
-  opts.on("-m=MEMORY", "--memory=MB", "Memory threshold in MB (default: 800)") do |mb|
+  opts.on("-m=MEMORY", "--memory=MB", "Memory threshold in MB (default: 400)") do |mb|
     options[:threshold] = mb
   end
 
@@ -23,7 +23,7 @@ end.parse!
 
 # set option defaults
 options[:interval]  ||= 30
-options[:threshold] ||= 800
+options[:threshold] ||= 400
 options[:threshold] = options[:threshold].to_i
 
 process_name = 'passenger_mon'
