@@ -1,5 +1,29 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+options = {}
+
+op = OptionParser.new do |opts|
+  opts.banner = 'Usage: passenger_mon [options]'
+
+  opts.on("-i=SECONDS", "--interval=SECONDS", "Poll interval in seconds (default: 10)") do |interval|
+    options[:interval] = interval
+  end
+
+  opts.on("-m=MEMORY", "--memory=MB", "Memory threshold in MB (default: 800)") do |mb|
+    options[:threshold] = mb
+  end
+
+  opts.on_tail("-h", "--help", "show this message") do
+    abort(opts.to_s)
+  end
+end.parse!
+
+# set option defaults
+options[:interval]  ||= 10
+options[:threshold] ||= 800
+options[:threshold] = options[:threshold].to_i
+
 require 'logger'
 logger = Logger.new("/var/log/passenger_mon.log")
 real_mem_threshold = 800
