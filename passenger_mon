@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'logger'
+logger = Logger.new("/var/log/passenger_mon.log")
+real_mem_threshold = 800
+
+Signal.trap('INT') do
+  logger.info "Shutting down now..."
+  abort("\n")
+end
+
+loop do
+  logger.info "Checking for naughty processes..."
+  
+  results = `passenger-memory-stats`
+  results = results.split("\n").grep(/Rails/)
+
+  results.each do |res|
+    pid, vm_size, vm_size_label, mem_res, *bullshit = res.strip.split(/\s+/)
+    if mem_res.to_i >= real_mem_threshold
+      logger.info "Killing process #{pid} using #{mem_res.to_i}mb of ram (Threshold=#{real_mem_threshold}mb)"
+      system("kill #{pid}")
+    end
+  end
+  
+  sleep 10
+end
