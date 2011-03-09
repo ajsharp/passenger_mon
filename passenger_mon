@@ -48,7 +48,6 @@ File.open(pidfile, 'w') { |f| f.puts($$) }
 
 require 'logger'
 logger = Logger.new("/var/log/passenger_mon.log")
-real_mem_threshold = 800
 
 Signal.trap('INT') do
   logger.info "Shutting down now..."
@@ -63,11 +62,10 @@ loop do
 
   results.each do |res|
     pid, vm_size, vm_size_label, mem_res, *bullshit = res.strip.split(/\s+/)
-    if mem_res.to_i >= real_mem_threshold
-      logger.info "Killing process #{pid} using #{mem_res.to_i}mb of ram (Threshold=#{real_mem_threshold}mb)"
-      system("kill #{pid}")
+    if mem_res.to_i >= options[:threshold]
+      logger.info "Killing process #{pid} using #{mem_res.to_i}mb of ram (Threshold=#{options[:threshold]}mb)"
     end
   end
   
-  sleep 10
+  sleep options[:interval].to_i
 end
