@@ -65,7 +65,7 @@ end
 loop do
   logger.info "Checking for naughty processes..."
   
-  results = `passenger-memory-stats`
+  results = `passenger-memory-stats 2> /dev/null`
   results = results.split("\n").grep(/Rack/)
 
   results.each do |res|
