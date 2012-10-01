@@ -32,7 +32,7 @@ end.parse!
 # set option defaults
 options[:interval]  ||= 30
 options[:threshold] ||= 400
-options[:log]       ||= "/var/log/passenger_mong.log"
+options[:log]       ||= "/var/log/passenger_mon.log"
 options[:pidfile]   ||= "/tmp/passenger_mon.pid"
 options[:threshold] = options[:threshold].to_i
 
@@ -65,8 +65,8 @@ end
 loop do
   logger.info "Checking for naughty processes..."
   
-  results = `passenger-memory-stats`
-  results = results.split("\n").grep(/Rails/)
+  results = `passenger-memory-stats 2> /dev/null`
+  results = results.split("\n").grep(/Rack/)
 
   results.each do |res|
     pid, vm_size, vm_size_label, mem_res, *bullshit = res.strip.split(/\s+/)
