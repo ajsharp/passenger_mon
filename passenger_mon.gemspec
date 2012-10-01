@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "passenger_mon"
-  s.version     = '0.2.0'
+  s.version     = '0.3.0'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Alex Sharp", "Rick Bradley"]
   s.email       = ["ajsharp@gmail.com"]
