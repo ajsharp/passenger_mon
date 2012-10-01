@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Alex Sharp", "Rick Bradley"]
   s.email       = ["ajsharp@gmail.com"]
   s.homepage    = "https://github.com/ajsharp/passenger_mon"
-  s.summary     = "Rails process monitoring for passenger 3"
-  s.description = "Need to control the memory footprint of your passenger processes. You need passenger_mon, bro."
+  s.summary     = "Rails process memory monitoring for passenger 3"
+  s.description = "When you need to control the memory footprint of your passenger processes"
 
   s.required_ruby_version     = '>= 1.8.7'
   s.required_rubygems_version = '>= 1.3.6'
